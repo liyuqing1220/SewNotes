@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#8a5a44">
+<title>心裁 · 缝纫项目手账</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="心裁">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<aside id="sidebar">
+  <div class="brand"><span class="logo">✂</span> 心裁<span class="brand-en">SEW NOTES</span></div>
+  <button id="addProject" class="btn primary block">＋ 新建项目</button>
+  <div class="nav-label">我的项目</div>
+  <ul id="projectList"></ul>
+  <div class="storage">
+    <i></i> 自动保存在此浏览器
+    <div class="io">
+      <button id="themeBtn" class="btn ghost small">🎨 配色</button>
+      <button id="installBtn" class="btn ghost small" hidden>📱 添加到主屏幕</button>
+      <button id="exportBtn" class="btn ghost small">导出备份</button>
+      <label class="btn ghost small">导入<input id="importInput" type="file" accept="application/json" hidden></label>
+    </div>
+  </div>
+</aside>
+
+<main id="main">
+  <button id="menuBtn" class="menu-btn" aria-label="项目列表">☰</button>
+  <div id="empty" class="empty">
+    <div class="empty-icon">🧵</div>
+    <h2>还没有缝纫项目</h2>
+    <p>点击「新建项目」开始记录裁片、步骤和制作心得。</p>
+    <button class="btn primary" onclick="document.getElementById('addProject').click()">＋ 新建项目</button>
+  </div>
+
+  <div id="detail" hidden>
+    <header class="detail-head">
+      <input id="projName" class="proj-name" placeholder="项目名称" maxlength="60">
+      <div class="head-meta">
+        <span id="projDate" class="muted"></span>
+        <button id="deleteProject" class="btn danger small">删除项目</button>
+      </div>
+      <div class="progress"><div id="progressBar"></div></div>
+      <div id="progressText" class="muted small-text"></div>
+    </header>
+
+    <section id="piecesCard" class="card">
+      <div id="piecesHead" class="card-head collapse-head" title="点击折叠 / 展开">
+        <h3><span class="chev">▾</span>① 裁片清单</h3>
+        <div class="head-right">
+          <span id="pieceDone" class="muted"></span>
+          <div id="pieceSummary" class="chips"></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="settings-bar">
+          <div class="srow">
+            <span class="lbl">缝份宽度</span>
+            <select id="seamSelect" aria-label="缝份宽度">
+              <option value="1">1 cm</option>
+              <option value="0.7">0.7 cm</option>
+              <option value="0.5">0.5 cm</option>
+              <option value="0">无缝份</option>
+              <option value="custom">手动输入…</option>
+            </select>
+            <span id="seamCustomWrap" hidden><input id="seamCustom" type="number" min="0" step="0.1" aria-label="自定义缝份"> cm</span>
+            <span class="muted">统一应用到本项目的所有裁片</span>
+          </div>
+          <div class="srow">
+            <span class="lbl">输入尺寸</span>
+            <span class="seg">
+              <label><input type="radio" name="seamInc" value="1">已含缝份</label>
+              <label><input type="radio" name="seamInc" value="0">不含缝份（净尺寸）</label>
+            </span>
+          </div>
+          <div class="srow">
+            <span class="lbl">布料清单</span>
+            <span class="muted">每块布一行。同种类有多块布时会自动编号（外布 A、外布 B…），裁片里选用哪块布即可</span>
+          </div>
+          <div id="fabricList" class="fabric-list"></div>
+          <div class="srow">
+            <button id="addFabric" class="btn ghost small" type="button">＋ 添加布料</button>
+            <button id="resetColors" class="link-btn" type="button">颜色恢复配色默认</button>
+          </div>
+        </div>
+        <div id="pieceList" class="piece-list"></div>
+        <div class="card-foot">
+          <button id="addPiece" class="btn ghost">＋ 添加裁片</button>
+          <button id="resetPieces" class="btn ghost small" title="再做一次时使用">↺ 清空完成勾选</button>
+        </div>
+        <div class="layout-wrap">
+          <div class="layout-head">
+            <h4>排料图 · 用布估算</h4>
+            <span class="muted">每块布单独排布（布幅在上方「布料清单」里设置）· <b>拖动裁片可调整位置，双击旋转 90°</b> · 已裁的裁片显示为淡色</span>
+          </div>
+          <div class="settings-bar">
+            <div class="srow">
+              <label class="check"><input id="allowRotate" type="checkbox"> 允许裁片旋转 90° 排布</label>
+              <span class="muted">（更省布，但会改变布纹方向；有方向的印花或需要顺纱向的裁片请勿勾选）</span>
+            </div>
+          </div>
+          <div id="yardage" class="yardage"></div>
+          <div id="layout"></div>
+          <datalist id="widthPresets"><option value="90"><option value="110"><option value="112"><option value="140"><option value="145"><option value="150"></datalist>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h3>② 制作步骤</h3>
+        <span class="head-right"><span id="stepCount" class="muted"></span>
+        <button id="resetSteps" class="btn ghost small" title="再做一次时使用">↺ 清空勾选</button></span>
+      </div>
+      <ol id="stepList" class="steps"></ol>
+      <form id="stepForm" class="step-form">
+        <input id="stepInput" placeholder="输入一个步骤，回车添加（如：缝合前后片肩线）" autocomplete="off">
+        <button class="btn primary" type="submit">添加</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h3>③ 制作笔记 · 遇到的问题</h3>
+        <span id="noteSaved" class="muted"></span>
+      </div>
+      <textarea id="notes" placeholder="记录制作过程中遇到的问题、解决办法、下次要改进的地方……"></textarea>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h3>④ 成品照片</h3>
+        <label class="btn ghost small">＋ 上传照片<input id="photoInput" type="file" accept="image/*" multiple hidden></label>
+      </div>
+      <div id="photoGrid" class="photo-grid"></div>
+    </section>
+  </div>
+</main>
+<div id="scrim"></div>
+<dialog id="pieceDialog"></dialog>
+<dialog id="themeDialog"></dialog>
+<dialog id="photoDialog"></dialog>
+<dialog id="installDialog"></dialog>
+<div id="printArea"></div>
+<script src="app.js"></script>
+</body>
+</html>

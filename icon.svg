@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#8a5a44"/>
+  <rect x="60" y="60" width="392" height="392" rx="64" fill="none" stroke="#f7efe6" stroke-width="9" stroke-dasharray="26 17" stroke-linecap="round" opacity="0.8"/>
+  <text x="256" y="262" font-family="Hiragino Sans GB, STHeiti, sans-serif" font-weight="600" font-size="150" letter-spacing="4" fill="#fffaf4" text-anchor="middle" dominant-baseline="central">心裁</text>
+</svg>
