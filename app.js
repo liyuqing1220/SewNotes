@@ -1058,17 +1058,17 @@
       installPrompt = null;
       return;
     }
-    const ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     const dlg = $('installDialog');
-    dlg.innerHTML = `<h3>📱 把心裁添加到主屏幕</h3>
+    dlg.innerHTML = `<h3>📱 把心裁添加到主屏幕 / 程序坞</h3>
       ${location.protocol === 'file:' ? '<p class="warn-box">⚠ 现在是直接打开的本地文件，无法安装。请把网站放到网上（https 地址）后，用手机浏览器打开那个网址再安装。</p>' : ''}
       <dl class="dlg-info">
         <dt>iPhone / iPad</dt><dd>用 <b>Safari</b> 打开本页 → 点底部的「分享」按钮 <b>⬆︎</b> → 选「<b>添加到主屏幕</b>」</dd>
         <dt>安卓手机</dt><dd>用 <b>Chrome</b> 打开本页 → 点右上角 <b>⋮</b> → 选「<b>安装应用</b>」或「<b>添加到主屏幕</b>」</dd>
-        <dt>电脑</dt><dd>用 Chrome 或 Edge 打开 → 地址栏右侧的「安装」图标</dd>
+        <dt>Mac（Safari）</dt><dd>菜单栏「<b>文件</b>」→「<b>添加到程序坞…</b>」，或点工具栏的「分享」按钮 <b>⬆︎</b> →「<b>添加到程序坞</b>」（需要 macOS 14 Sonoma 或更新版本）</dd>
+        <dt>电脑（Chrome / Edge）</dt><dd>打开本页 → 点地址栏右侧的「<b>安装</b>」图标</dd>
       </dl>
-      <p class="muted">添加后，心裁会像普通 App 一样全屏打开，没有网络也能用。<br>
-      ⚠ ${ios ? 'iPhone 上' : ''}主屏幕里的心裁和浏览器里的数据是<b>分开保存</b>的：如果已经在浏览器里记录了项目，请先点「导出备份」，再在主屏幕打开的心裁里点「导入」。</p>
+      <p class="muted">添加后，心裁会像普通 App 一样在独立窗口中打开，没有网络也能用。<br>
+      ⚠ 主屏幕 / 程序坞里的心裁和浏览器里的数据是<b>分开保存</b>的：如果已经在浏览器里记录了项目，请先点「导出备份」，再在主屏幕或程序坞里打开的心裁中点「导入」。</p>
       <div class="dlg-actions"><button class="btn primary" data-act="close">知道了</button></div>`;
     dlg.onclick = (e) => { if (e.target === dlg || e.target.closest('[data-act=close]')) dlg.close(); };
     dlg.showModal();
